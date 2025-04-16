@@ -1,0 +1,37 @@
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+// Update cart count on page load
+document.getElementById('cart-count').textContent = cart.length;
+
+// Add to Cart Logic
+const buttons = document.querySelectorAll('.product button');
+buttons.forEach(button => {
+  button.addEventListener('click', (e) => {
+    const product = e.target.closest('.product');
+    const id = product.dataset.id;
+    const name = product.dataset.name;
+    const price = product.dataset.price;
+
+    cart.push({ id, name, price });
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    document.getElementById('cart-count').textContent = cart.length;
+    alert(`${name} added to cart!`);
+  });
+});
+
+// View Cart Click
+document.getElementById('view-cart').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (cart.length === 0) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  let message = "Items in your cart:\n\n";
+  cart.forEach((item, index) => {
+    message += `${index + 1}. ${item.name} - $${item.price}\n`;
+  });
+
+  alert(message);
+});
